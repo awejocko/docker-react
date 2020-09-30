@@ -1,0 +1,27 @@
+version: '3'
+services:
+#This is my service
+ web: #These are configurations for my service
+  # need stdin_open set to true for some reason - not sure why
+  stdin_open: true
+  # define where to get the Dockerfile to build
+  build:
+   context: .
+   dockerfile: Dockerfile.dev
+  #map ports 'external port:port internal to container'
+  ports:
+   - '3000:3000'
+  #map volumes - use node_modules inside the container, but map the other files and folders into the container
+  volumes:
+   - /app/node_modules
+   - .:/app
+#This is a test service   
+ tests:
+  build:
+   context: .
+   dockerfile: Dockerfile.dev
+  volumes:
+   - /app/node_modules
+   - .:/app
+  command: ["npm", "run", "test"]
+   
